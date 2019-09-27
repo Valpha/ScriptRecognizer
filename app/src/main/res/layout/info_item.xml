@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:ems="10"
+        android:focusableInTouchMode="false"
+        android:gravity="center"
+        android:hint="Name"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:inputType="textPersonName"
+        android:longClickable="true"
+        android:singleLine="true"
+        android:textSize="18sp" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="?android:attr/listDivider" />
+
+    <EditText
+        android:id="@+id/et_stunum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:background="@null"
+        android:ems="10"
+        android:focusableInTouchMode="false"
+        android:gravity="center"
+        android:hint="Student Number"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:inputType="number"
+        android:longClickable="true"
+        android:singleLine="true"
+        android:textSize="18sp" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="?android:attr/listDivider" />
+
+    <EditText
+        android:id="@+id/et_score"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Score"
+        android:imeOptions="flagNoExtractUi|actionSend"
+        android:inputType="number"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:textColor="#F44336"
+        android:textColorHint="#EF5350"
+        android:textSize="18sp" />
+</LinearLayout>
