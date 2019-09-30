@@ -1,6 +1,13 @@
 package com.dlut.mnist.scriptrecognizer;
 
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -40,6 +47,7 @@ public class MainActivity extends CameraActivity {
     public static ImageView resultView;
     private ListView lvDataBoard;
     private Button btSave;
+    private ImageView ivCankaokuang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +59,21 @@ public class MainActivity extends CameraActivity {
 
         resultView = (ImageView) findViewById(R.id.imageView2);
         cameraView = (CameraView) findViewById(R.id.cameraView);
-
+        ivCankaokuang = (ImageView) findViewById(R.id.iv_cankaokuang);
         cameraView.setVisibility(SurfaceView.VISIBLE);
 
 
         cameraView.setCvCameraViewListener(new CvCameraViewListener2() {
             @Override
             public void onCameraViewStarted(int width, int height) {
-
+                Bitmap cankaokuang = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(cankaokuang);
+                Paint paint = new Paint();
+                paint.setColor(Color.CYAN);
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setStrokeWidth(3);
+                canvas.drawRect(width/7*2,height/7*3,width/7*5,height/7*4,paint);
+                ivCankaokuang.setImageBitmap(cankaokuang);
             }
 
             @Override

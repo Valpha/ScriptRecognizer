@@ -104,7 +104,7 @@ public class ImageProcessUtils {
 
             Imgcodecs.imwrite(mfilepath.replace(".jpg,","_AfterProcess.jpg"),img);
 
-            // Imgcodecs.imwrite(mfilepath.replace(".jpg","_GRAY.jpg"),mImage);
+            // Imgcodecs.imwrite(mfilepath.replace(".jpg","_RAY.jpg"),mImage);
             Bitmap bmp = BitmapFactory.decodeFile(mfilepath);
             Utils.matToBitmap(img, bmp);
             ViewUtils.runOnUiThread(() -> {
