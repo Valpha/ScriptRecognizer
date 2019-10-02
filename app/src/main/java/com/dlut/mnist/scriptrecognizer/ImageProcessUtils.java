@@ -1,8 +1,10 @@
 package com.dlut.mnist.scriptrecognizer;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -22,6 +24,9 @@ import org.opencv.imgproc.Moments;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Valpha
+ */
 public class ImageProcessUtils {
     public static void startProcess(String filepath) {
         ThreadUtils.executeBySingle(new CvTask(filepath));
@@ -108,9 +113,11 @@ public class ImageProcessUtils {
             Bitmap bmp = BitmapFactory.decodeFile(mfilepath);
             Utils.matToBitmap(img, bmp);
             ViewUtils.runOnUiThread(() -> {
-                MainActivity.resultView.setImageBitmap(bmp);
-                MainActivity.resultView.setVisibility(View.VISIBLE);
-                MainActivity.resultView.setOnClickListener(view -> view.setVisibility(View.GONE));
+                Activity mainActivity = MyActivityManager.getInstance().getCurrentActivity();
+                ImageView ivResult = mainActivity.findViewById(R.id.iv_result);
+                ivResult.setImageBitmap(bmp);
+                ivResult.setVisibility(View.VISIBLE);
+                ivResult.setOnClickListener(view -> view.setVisibility(View.GONE));
             });
 
 

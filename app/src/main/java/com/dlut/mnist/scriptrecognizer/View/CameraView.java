@@ -1,11 +1,6 @@
 package com.dlut.mnist.scriptrecognizer.View;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.Size;
@@ -17,7 +12,6 @@ import com.dlut.mnist.scriptrecognizer.ImageProcessUtils;
 
 import org.opencv.android.JavaCameraView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -30,24 +24,6 @@ public class CameraView extends JavaCameraView implements PictureCallback {
 
         super(context, attrs);
 
-    }
-
-    public List<String> getEffectList() {
-        return mCamera.getParameters().getSupportedColorEffects();
-    }
-
-    public boolean isEffectSupported() {
-        return (mCamera.getParameters().getColorEffect() != null);
-    }
-
-    public String getEffect() {
-        return mCamera.getParameters().getColorEffect();
-    }
-
-    public void setEffect(String effect) {
-        Camera.Parameters params = mCamera.getParameters();
-        params.setColorEffect(effect);
-        mCamera.setParameters(params);
     }
 
     public List<Size> getResolutionList() {
@@ -68,19 +44,8 @@ public class CameraView extends JavaCameraView implements PictureCallback {
     public void takePicture(final String fileName) {
         LogUtils.i("Taking picture");
         Camera.Parameters parameters = mCamera.getParameters();
-        parameters.setPictureSize(1280, 720);
+        parameters.setPreviewSize(1280, 720);
         mCamera.setParameters(parameters);
-        // Size resolution = getResolution();
-        // Size size = mCamera.new Size(1280, 720);
-        // LogUtils.d("resolution was "+ resolution.width+"*"+resolution.height);
-        //
-        // if (resolution.equals(size))
-        // {
-        //     setResolution(size);
-        // }
-        // size = getResolution();
-        // LogUtils.d("resolution was "+ size.width+"*"+size.height);
-
 
         this.mPictureFileName = fileName;
         // Postview and jpeg are sent in the same buffers if the queue is not empty when performing a capture.

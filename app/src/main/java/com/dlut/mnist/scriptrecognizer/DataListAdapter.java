@@ -7,34 +7,34 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ViewUtils;
 import com.dlut.mnist.scriptrecognizer.DAO.DataBean;
 import com.dlut.mnist.scriptrecognizer.DAO.DataManager;
 
+/**
+ * @author Valpha
+ */
 public class DataListAdapter extends BaseAdapter {
     private String TAG = "MyAdapter";
-    private ViewHolder viewholder;
-    private Context mctx;
+    private Context mCtx;
     private int count;
+    private DataManager dataManager;
 
-    public DataListAdapter(Context mctx) {
-        this.mctx = mctx;
+    DataListAdapter(Context mCtx, DataManager dataManager) {
+        this.mCtx = mCtx;
+        this.dataManager = dataManager;
     }
 
     @Override
     public int getCount() {
-        count = DataManager.getInstance().getDataCount();
-
+        count = dataManager.getDataCount();
         return count + 1;
     }
 
@@ -50,38 +50,32 @@ public class DataListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        //传入三个参数，关注前两个
-        //  第一个为位置索引
-        //  第二个为“回收站”，可以判断是否利用可以回收利用的View，节约内存需要使用
 
+        ViewHolder viewholder;
         if (view == null) {
-            view = View.inflate(mctx, R.layout.info_item, null);
+            view = View.inflate(mCtx, R.layout.info_item, null);
             viewholder = new ViewHolder(
-                    (EditText) view.findViewById(R.id.et_name),
-                    (EditText) view.findViewById(R.id.et_stunum),
-                    (EditText) view.findViewById(R.id.et_score));
+                    view.findViewById(R.id.et_name),
+                    view.findViewById(R.id.et_stunum),
+                    view.findViewById(R.id.et_score));
             view.setTag(viewholder);
-
-
         } else {
             viewholder = (ViewHolder) view.getTag();
         }
         //  对ViewHolder进行更新
         if (i != count) {
-            DataBean data = DataManager.getInstance().getDataByOrder(i);
-            viewholder.et_score.setHint("Score");
-            viewholder.et_score.setText(DataManager.getInstance().getScore(i));
+            DataBean data = dataManager.getDataByOrder(i);
+
             viewholder.et_name.setText(data.getName());
             viewholder.et_name.setTextColor(Color.BLACK);
-            viewholder.et_stunum.setText(data.getStunum());
-            viewholder.et_stunum.setTextColor(Color.BLACK);
             viewholder.et_name.setOnLongClickListener(v -> {
                 Log.d(TAG, "onLongClick: intro the LONG PRESS");
                 v.setFocusableInTouchMode(true);
                 v.setBackgroundColor(Color.LTGRAY);
 
                 v.requestFocus();
-                InputMethodManager inputManager = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager inputManager = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert inputManager != null;
                 inputManager.showSoftInput(v, 0);
                 ((EditText) v).setOnEditorActionListener((v1, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_SEND
@@ -96,26 +90,30 @@ public class DataListAdapter extends BaseAdapter {
 
                         //  写入新的姓名
                         ViewParent view1 = v.getParent();
-                        Log.d(TAG, "getView: view1-----"+view1);
+                        Log.d(TAG, "getView: view1-----" + view1);
                         ViewParent view2 = view1.getParent();
-                        Log.d(TAG, "getView: view2-----"+view2);
+                        Log.d(TAG, "getView: view2-----" + view2);
                         int positon = ((ListView) view2).getPositionForView((View) view1);
-                        Log.d(TAG, "getView: "+positon);
+                        Log.d(TAG, "getView: " + positon);
 
                         String string = v1.getText().toString().trim();
-                        DataManager.getInstance().changeName(positon, string);
+                        dataManager.changeName(positon, string);
                     }
                     return false;
                 });
 
                 return true;
             });
+
+            viewholder.et_stunum.setText(data.getStunum());
+            viewholder.et_stunum.setTextColor(Color.BLACK);
             viewholder.et_stunum.setOnLongClickListener(v -> {
                 Log.d(TAG, "onLongClick: intro the LONG PRESS");
                 v.setFocusableInTouchMode(true);
                 v.setBackgroundColor(Color.LTGRAY);
                 v.requestFocus();
-                InputMethodManager inputManager = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager inputManager = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert inputManager != null;
                 inputManager.showSoftInput(v, 0);
                 ((EditText) v).setOnEditorActionListener((v1, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_SEND
@@ -129,40 +127,38 @@ public class DataListAdapter extends BaseAdapter {
 
                         //  写入新的姓名
                         ViewParent view1 = v.getParent();
-                        Log.d(TAG, "getView: view1-----"+view1);
+                        Log.d(TAG, "getView: view1-----" + view1);
                         ViewParent view2 = view1.getParent();
-                        Log.d(TAG, "getView: view2-----"+view2);
+                        Log.d(TAG, "getView: view2-----" + view2);
                         int positon = ((ListView) view2).getPositionForView((View) view1);
-                        Log.d(TAG, "getView: "+positon);
+                        Log.d(TAG, "getView: " + positon);
 
                         String string = v1.getText().toString().trim();
-                        DataManager.getInstance().changeStunum(positon, string);
+                        dataManager.changeStunum(positon, string);
                     }
                     return false;
                 });
 
                 return true;
             });
+
+            viewholder.et_score.setHint("Score");
+            viewholder.et_score.setText(dataManager.getScore(i));
             viewholder.et_score.setFocusableInTouchMode(true);
             viewholder.et_score.setFocusable(true);
-
-            viewholder.et_score.setOnEditorActionListener((v, actionId, event) -> {
-                if (actionId == EditorInfo.IME_ACTION_SEND
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
-                    //处理事件
-                    //  写入新的姓名
+            viewholder.et_score.setOnFocusChangeListener((v, hasFocus) -> {
+                Log.d(TAG, "getView: this Focus is " + hasFocus);
+                if (!hasFocus) {
                     ViewParent view1 = v.getParent();
-                    Log.d(TAG, "getView: view1-----"+view1);
+                    Log.d(TAG, "getView: view1-----" + view1);
                     ViewParent view2 = view1.getParent();
-                    Log.d(TAG, "getView: view2-----"+view2);
+                    Log.d(TAG, "getView: view2-----" + view2);
                     int positon = ((ListView) view2).getPositionForView((View) view1);
-                    Log.d(TAG, "getView: "+positon);
+                    Log.d(TAG, "getView: " + positon);
 
-                    String string = v.getText().toString().trim();
-                    DataManager.getInstance().addScore(positon, string);
+                    String string = ((EditText) v).getText().toString().trim();
+                    dataManager.addScore(positon, string);
                 }
-                return false;
             });
         } else {
             viewholder.et_name.setText("添加");
@@ -171,11 +167,12 @@ public class DataListAdapter extends BaseAdapter {
                 Log.d(TAG, "onLongClick: intro the LONG PRESS");
                 v.setFocusableInTouchMode(true);
                 v.setBackgroundColor(Color.LTGRAY);
-                ((EditText)v).setText("");
-                ((EditText)v).setTextColor(Color.BLACK);
+                ((EditText) v).setText("");
+                ((EditText) v).setTextColor(Color.BLACK);
 
                 v.requestFocus();
-                InputMethodManager inputManager = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager inputManager = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert inputManager != null;
                 inputManager.showSoftInput(v, 0);
                 ((EditText) v).setOnEditorActionListener((v1, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_SEND
@@ -188,15 +185,15 @@ public class DataListAdapter extends BaseAdapter {
 
                         v1.clearFocus();
 
-                        DataManager.getInstance().addNewByName(v1.getText().toString().trim());
+                        dataManager.addNewByName(v1.getText().toString().trim());
 
                         ViewParent view1 = v.getParent();
-                        Log.d(TAG, "getView: view1-----"+view1);
+                        Log.d(TAG, "getView: view1-----" + view1);
                         ViewParent view2 = view1.getParent();
-                        Log.d(TAG, "getView: view2-----"+view2);
+                        Log.d(TAG, "getView: view2-----" + view2);
                         ViewUtils.runOnUiThread(() -> {
-                            ListAdapter adapter = ((ListView) view2).getAdapter();
-                            ((DataListAdapter)adapter).notifyDataSetChanged();
+                            DataListAdapter adapter = (DataListAdapter) ((ListView) view2).getAdapter();
+                            adapter.notifyDataSetChanged();
                         });
                     }
                     return false;
@@ -207,16 +204,16 @@ public class DataListAdapter extends BaseAdapter {
 
             viewholder.et_stunum.setText("添加");
             viewholder.et_stunum.setTextColor(Color.LTGRAY);
-
             viewholder.et_stunum.setOnLongClickListener(v -> {
                 Log.d(TAG, "onLongClick: intro the LONG PRESS");
                 v.setFocusableInTouchMode(true);
                 v.setBackgroundColor(Color.LTGRAY);
-                ((EditText)v).setText("");
-                ((EditText)v).setTextColor(Color.BLACK);
+                ((EditText) v).setText("");
+                ((EditText) v).setTextColor(Color.BLACK);
 
                 v.requestFocus();
-                InputMethodManager inputManager = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager inputManager = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert inputManager != null;
                 inputManager.showSoftInput(v, 0);
                 ((EditText) v).setOnEditorActionListener((v1, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_SEND
@@ -228,14 +225,14 @@ public class DataListAdapter extends BaseAdapter {
                         v.setBackgroundColor(Color.TRANSPARENT);
                         v1.clearFocus();
 
-                        DataManager.getInstance().addNewByStunum(v1.getText().toString().trim());
+                        dataManager.addNewByStunum(v1.getText().toString().trim());
                         ViewParent view1 = v.getParent();
-                        Log.d(TAG, "getView: view1-----"+view1);
+                        Log.d(TAG, "getView: view1-----" + view1);
                         ViewParent view2 = view1.getParent();
-                        Log.d(TAG, "getView: view2-----"+view2);
+                        Log.d(TAG, "getView: view2-----" + view2);
                         ViewUtils.runOnUiThread(() -> {
                             ListAdapter adapter = ((ListView) view2).getAdapter();
-                            ((DataListAdapter)adapter).notifyDataSetChanged();
+                            ((DataListAdapter) adapter).notifyDataSetChanged();
                         });
                     }
                     return false;
@@ -245,6 +242,7 @@ public class DataListAdapter extends BaseAdapter {
             });
 
             viewholder.et_score.setHint("");
+            viewholder.et_score.setText("");
             viewholder.et_score.setFocusableInTouchMode(false);
 
         }

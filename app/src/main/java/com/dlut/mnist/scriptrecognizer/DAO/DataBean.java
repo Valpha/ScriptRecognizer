@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Valpha
+ */
 public class DataBean {
     private int id;
 
@@ -20,9 +23,11 @@ public class DataBean {
     public int getId() {
         return id;
     }
+
     public String getIdString() {
         return String.valueOf(id);
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -51,7 +56,7 @@ public class DataBean {
 
         List<String> list=new ArrayList<>();
         for (String dateKey : dateList) {
-           list.add(score.get(dateKey));
+            list.add(score.get(dateKey));
         }
         return list.toArray();
     }
