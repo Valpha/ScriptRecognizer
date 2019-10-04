@@ -2,9 +2,11 @@ package com.dlut.mnist.scriptrecognizer;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -19,9 +21,9 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,23 +39,26 @@ public class ImageProcessUtils {
         String mfilepath;
         Mat mImage;
 
-        public CvTask(String mfilepath) {
+        CvTask(String mfilepath) {
             this.mfilepath = mfilepath;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public List<String> doInBackground() throws Throwable {
+        public List<String> doInBackground() {
 
 
             List<String> fileList = new ArrayList<>();
 
 
-            mImage = Imgcodecs.imread(mfilepath, Imgcodecs.IMREAD_GRAYSCALE);
+            mImage = Imgcodecs.imread(mfilepath, Imgcodecs.IMREAD_ANYCOLOR);
             int width = mImage.width();
             int height = mImage.height();
             int w = width / 7;
             int h = height / 7;
-            Mat img = mImage.submat(3 * h, 4 * h, 2 * w, 5 * w);
+            Mat mImageColored = mImage.submat(3 * h, 4 * h, 2 * w, 5 * w);
+            Mat img = new Mat();
+            Imgproc.cvtColor(mImageColored, img, Imgproc.COLOR_BGR2GRAY);
             w = img.width();
             h = img.height();
             Mat blur = new Mat();
@@ -68,8 +73,7 @@ public class ImageProcessUtils {
 
             List<MatOfPoint> contours = new ArrayList<>();
             Mat hierarchy = new Mat();
-            // Imgproc.findContours(opening, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
-            Imgproc.findContours(otsu, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+            Imgproc.findContours(opening, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
             double meanWidth = 0;
             double meanHeight = 0;
@@ -78,14 +82,32 @@ public class ImageProcessUtils {
 
             for (MatOfPoint contour : contours) {
                 Rect cnt = Imgproc.boundingRect(contour);
-                Moments M = Imgproc.moments(contour, true);
-                meanHeight += cnt.height;
-                meanWidth += cnt.width;
-                midHeight.add(cnt.height);
-                midWidth.add(cnt.width);
+                // Moments M = Imgproc.moments(contour, true);
+                if (Imgproc.contourArea(contour) >= 100) {
+
+                    meanHeight += cnt.height;
+                    meanWidth += cnt.width;
+                    midHeight.add(cnt.height);
+                    midWidth.add(cnt.width);
+                }
             }
             meanHeight /= contours.size();
             meanWidth /= contours.size();
+            int i = 0;
+            Collections.sort(contours, (o1, o2) -> {
+                Rect rect1 = Imgproc.boundingRect(o1);
+                Rect rect2 = Imgproc.boundingRect(o2);
+
+                // double total = rect1.tl().y/rect2.tl().y;
+                // if (total >= 0.9 && total <= 1.4) {
+                //     result = Double.compare(rect1.tl().x, rect2.tl().x);
+                // }
+                return Double.compare(rect1.tl().x, rect2.tl().x);
+            });
+
+            List<Rect> rects = new ArrayList<>();
+            String dirpath = mfilepath.replace(".jpg", "/");
+            FileUtils.createDir(dirpath);
             for (MatOfPoint contour : contours) {
                 Rect cnt = Imgproc.boundingRect(contour);
 
@@ -93,25 +115,39 @@ public class ImageProcessUtils {
                     continue;
 
                 }
-                if (cnt.x + (int) cnt.width / 2 < 0.1 * w || cnt.x > 0.9 * w) {
+                if (cnt.x + cnt.width / 2 < 0.1 * w || cnt.x > 0.9 * w) {
                     continue;
                 }
-                if (cnt.y + (int) cnt.height / 2 < 0.08 * h || cnt.y > 0.92 * h) {
+                if (cnt.y + cnt.height / 2 < 0.08 * h || cnt.y > 0.92 * h) {
                     continue;
                 }
                 if (cnt.width > 1.5 * meanWidth) {
-                    Imgproc.rectangle(img, new Point(cnt.x, cnt.y), new Point(cnt.x + (cnt.width >> 1), cnt.y + cnt.height), new Scalar(0, 0, 255));
-                    Imgproc.rectangle(img, new Point(cnt.x + (cnt.width >> 1), cnt.y), new Point(cnt.x + cnt.width, cnt.y + cnt.height), new Scalar(0, 0, 255));
+                    Rect rect1 = new Rect(new Point(cnt.x, cnt.y), new Point(cnt.x + (cnt.width >> 1), cnt.y + cnt.height));
+                    Imgcodecs.imwrite(dirpath.concat(i++ + ".jpg"), new Mat(img, rect1));
+                    Imgproc.rectangle(mImageColored, rect1, new Scalar(0, 0, 255));
+
+                    rects.add(rect1);
+                    // i++;
+                    Rect rect2 = new Rect(new Point(cnt.x + (cnt.width >> 1), cnt.y), new Point(cnt.x + cnt.width, cnt.y + cnt.height));
+
+                    Imgcodecs.imwrite(dirpath.concat(i++ + ".jpg"), new Mat(img, rect2));
+                    Imgproc.rectangle(mImageColored, rect2, new Scalar(0, 0, 255));
+                    // i++;
+                    rects.add(rect2);
+
                 } else {
-                    Imgproc.rectangle(img,cnt,new Scalar(0,0,255));
+                    rects.add(cnt);
+                    Imgcodecs.imwrite(dirpath.concat(i++ + ".jpg"), new Mat(img, cnt));
+
+                    Imgproc.rectangle(mImageColored, cnt, new Scalar(0, 0, 255));
+                    // i++;
                 }
             }
-
-            Imgcodecs.imwrite(mfilepath.replace(".jpg,","_AfterProcess.jpg"),img);
+            Imgcodecs.imwrite(dirpath.concat("img.jpg"), mImageColored);
 
             // Imgcodecs.imwrite(mfilepath.replace(".jpg","_RAY.jpg"),mImage);
-            Bitmap bmp = BitmapFactory.decodeFile(mfilepath);
-            Utils.matToBitmap(img, bmp);
+            Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
+            Utils.matToBitmap(mImageColored, bmp);
             ViewUtils.runOnUiThread(() -> {
                 Activity mainActivity = MyActivityManager.getInstance().getCurrentActivity();
                 ImageView ivResult = mainActivity.findViewById(R.id.iv_result);

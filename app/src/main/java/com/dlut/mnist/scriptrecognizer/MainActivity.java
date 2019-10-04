@@ -82,6 +82,52 @@ public class MainActivity extends CameraActivity {
 
     }
 
+    private OnClickListener onClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.cameraView:
+                    LogUtils.d("onClick: cameraView was clicked!");
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+                    String currentDateandTime = sdf.format(new Date());
+                    FileUtils.createDir(PathUtils.getExternalStoragePath() + "/ScriptRecognizer");
+                    String fileName = PathUtils.getExternalStoragePath() + "/ScriptRecognizer" + "/" + currentDateandTime + ".jpg";
+
+                    cameraView.takePicture(fileName);
+                    ToastUtils.showShort(fileName + " saved");
+                    break;
+
+                default:
+                    break;
+
+
+            }
+        }
+    };
+
+    private void shareCsvFile() {
+        String filepath = SPUtils.getInstance(SPNAME).getString(SPKEY_FILE);
+        LogUtils.dTag(TAG, filepath);
+        if ("".equals(filepath)) {
+            ToastUtils.showShort("未指定文件！请先导入文件");
+        } else {
+            ShareFileUtils.shareFile(this, filepath);
+        }
+    }
+
+    public void openSystemFile() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "请选择文件!"), 1);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(this, "请安装文件管理器", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void initView() {
         tvFile = (TextView) findViewById(R.id.tv_file);
         ivRefRect = (ImageView) findViewById(R.id.iv_reference);
@@ -129,50 +175,9 @@ public class MainActivity extends CameraActivity {
             }
         });
         Button btImport = findViewById(R.id.bt_import);
-        btImport.setOnClickListener(v -> {
-            openSystemFile();
-        });
+        btImport.setOnClickListener(v -> openSystemFile());
         Button btShare = findViewById(R.id.bt_export);
-        btShare.setOnClickListener(v -> {
-            shareCsvFile();
-        });
-    }
-
-    private void shareCsvFile() {
-        String filepath = SPUtils.getInstance(SPNAME).getString(SPKEY_FILE);
-        LogUtils.dTag(TAG, filepath);
-        if ("".equals(filepath)) {
-            ToastUtils.showShort("未指定文件！请先导入文件");
-        } else {
-            ShareFileUtils.shareFile(this, filepath);
-        }
-    }
-
-    public void openSystemFile() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        try {
-            startActivityForResult(Intent.createChooser(intent, "请选择文件!"), 1);
-        } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(this, "请安装文件管理器", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            // Get the Uri of the selected file
-            Uri uri = data.getData();
-            LogUtils.dTag("MainActivity", uri);
-
-            String filepath = FileUtils.getFilePathByUri(this, uri);
-            LogUtils.dTag("MainActivity", filepath);
-            SPUtils.getInstance(SPNAME).put(SPKEY_FILE, filepath);
-            loadCsvFile();
-        }
+        btShare.setOnClickListener(v -> shareCsvFile());
     }
 
     private void requestWritePermission() {
@@ -271,29 +276,21 @@ public class MainActivity extends CameraActivity {
         return Collections.singletonList(cameraView);
     }
 
-    private OnClickListener onClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.cameraView:
-                    LogUtils.d("onClick: cameraView was clicked!");
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            // Get the Uri of the selected file
+            Uri uri = data.getData();
+            LogUtils.dTag("MainActivity", uri);
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-                    String currentDateandTime = sdf.format(new Date());
-                    FileUtils.createDir(PathUtils.getExternalStoragePath() + "/ScriptRecognizer");
-                    String fileName = PathUtils.getExternalStoragePath() + "/ScriptRecognizer" + "/sample_picture_" + currentDateandTime + ".jpg";
-
-                    cameraView.takePicture(fileName);
-                    ToastUtils.showShort(fileName + " saved");
-                    break;
-
-                default:
-                    break;
-
-
-            }
+            assert uri != null;
+            String filepath = FileUtils.getFilePathByUri(this, uri);
+            LogUtils.dTag("MainActivity", filepath);
+            SPUtils.getInstance(SPNAME).put(SPKEY_FILE, filepath);
+            loadCsvFile();
         }
-    };
+    }
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override

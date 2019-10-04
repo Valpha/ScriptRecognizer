@@ -1,6 +1,5 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: E:\\workspace\\Android\\ScriptRecognizer\\OPENCV\\java\\src\\org\\opencv\\engine\\OpenCVEngineInterface.aidl
  */
 package org.opencv.engine;
 /**
