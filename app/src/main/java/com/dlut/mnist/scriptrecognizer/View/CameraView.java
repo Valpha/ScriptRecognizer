@@ -43,9 +43,29 @@ public class CameraView extends JavaCameraView implements PictureCallback {
 
     public void takePicture(final String fileName) {
         LogUtils.i("Taking picture");
-        Camera.Parameters parameters = mCamera.getParameters();
-        parameters.setPreviewSize(1280, 720);
-        mCamera.setParameters(parameters);
+       Camera.Parameters parameters = mCamera.getParameters();
+      // parameters.setPreviewSize(1280, 720);
+     //   mCamera.setParameters(parameters);
+        try {
+            mCamera.setParameters(parameters);
+        } catch (Exception e) {
+            //非常罕见的情况
+            //个别机型在SupportPreviewSizes里汇报了支持某种预览尺寸，但实际是不支持的，设置进去就会抛出RuntimeException.
+            e.printStackTrace();
+            try {
+                //遇到上面所说的情况，只能设置一个最小的预览尺寸
+                parameters.setPreviewSize(1920, 1080);
+                mCamera.setParameters(parameters);
+            } catch (Exception e1) {
+                //到这里还有问题，就是拍照尺寸的锅了，同样只能设置一个最小的拍照尺寸
+                e1.printStackTrace();
+                try {
+                    parameters.setPictureSize(1920, 1080);
+                    mCamera.setParameters(parameters);
+                } catch (Exception ignored) {
+                }
+            }
+        }
 
         this.mPictureFileName = fileName;
         // Postview and jpeg are sent in the same buffers if the queue is not empty when performing a capture.
