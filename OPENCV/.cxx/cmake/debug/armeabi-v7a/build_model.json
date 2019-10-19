@@ -1,0 +1,73 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "D:\\Script1",
+      "sdkFolder": "D:\\Game\\android",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "ideBuildTargetAbi": "arm64-v8a,armeabi-v7a,armeabi",
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "D:\\Script1\\OPENCV\\build\\intermediates",
+      "gradleModulePathName": ":OPENCV",
+      "moduleRootFolder": "D:\\Script1\\OPENCV",
+      "makeFile": "D:\\Script1\\OPENCV\\libcxx_helper\\CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "compilerSettingsCacheFolder": "D:\\Script1\\.cxx",
+      "cxxFolder": "D:\\Script1\\OPENCV\\.cxx",
+      "ndkFolder": "D:\\Game\\android\\ndk-bundle",
+      "ndkVersion": "20.0.5594570",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [
+      "-DANDROID_STL\u003dc++_shared"
+    ],
+    "cFlagList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "soFolder": "D:\\Script1\\OPENCV\\build\\intermediates\\cmake\\debug\\lib",
+    "objFolder": "D:\\Script1\\OPENCV\\build\\intermediates\\cmake\\debug\\obj",
+    "jsonFolder": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug",
+    "gradleBuildOutputFolder": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARM64_V8A",
+      "ARMEABI_V7A"
+    ],
+    "buildTargetSet": [
+      "opencv_jni_shared"
+    ]
+  },
+  "abi": "ARMEABI_V7A",
+  "abiPlatformVersion": 24,
+  "cxxBuildFolder": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\armeabi-v7a",
+  "jsonFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\armeabi-v7a\\android_gradle_build.json",
+  "gradleBuildOutputFolder": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\armeabi-v7a",
+  "objFolder": "D:\\Script1\\OPENCV\\build\\intermediates\\cmake\\debug\\obj\\armeabi-v7a",
+  "buildCommandFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\armeabi-v7a\\build_command.txt",
+  "buildOutputFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\armeabi-v7a\\build_output.txt",
+  "modelOutputFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\armeabi-v7a\\build_model.json",
+  "cmake": {
+    "cmakeListsWrapperFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\armeabi-v7a\\CMakeLists.txt",
+    "toolchainWrapperFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\armeabi-v7a\\android_gradle_build.toolchain.cmake",
+    "buildGenerationStateFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\armeabi-v7a\\build_generation_state.json",
+    "cacheKeyFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\armeabi-v7a\\compiler_cache_key.json",
+    "compilerCacheUseFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\armeabi-v7a\\compiler_cache_use.json",
+    "compilerCacheWriteFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\armeabi-v7a\\compiler_cache_write.json",
+    "toolchainSettingsFromCacheFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\armeabi-v7a\\compiler_settings_cache.cmake",
+    "cmakeWrappingBaseFolder": "."
+  },
+  "jsonGenerationLoggingRecordFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\armeabi-v7a\\json_generation_record.json",
+  "compileCommandsJsonFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\armeabi-v7a\\compile_commands.json"
+}

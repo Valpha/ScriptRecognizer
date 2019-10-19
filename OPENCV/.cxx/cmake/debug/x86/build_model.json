@@ -1,0 +1,72 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "D:\\Script1",
+      "sdkFolder": "D:\\Game\\android",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "ideBuildTargetAbi": "x86",
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "D:\\Script1\\OPENCV\\build\\intermediates",
+      "gradleModulePathName": ":OPENCV",
+      "moduleRootFolder": "D:\\Script1\\OPENCV",
+      "makeFile": "D:\\Script1\\OPENCV\\libcxx_helper\\CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "compilerSettingsCacheFolder": "D:\\Script1\\.cxx",
+      "cxxFolder": "D:\\Script1\\OPENCV\\.cxx",
+      "ndkFolder": "D:\\Game\\android\\ndk-bundle",
+      "ndkVersion": "20.0.5594570",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [
+      "-DANDROID_STL\u003dc++_shared"
+    ],
+    "cFlagList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "soFolder": "D:\\Script1\\OPENCV\\build\\intermediates\\cmake\\debug\\lib",
+    "objFolder": "D:\\Script1\\OPENCV\\build\\intermediates\\cmake\\debug\\obj",
+    "jsonFolder": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug",
+    "gradleBuildOutputFolder": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "X86"
+    ],
+    "buildTargetSet": [
+      "opencv_jni_shared"
+    ]
+  },
+  "abi": "X86",
+  "abiPlatformVersion": 24,
+  "cxxBuildFolder": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\x86",
+  "jsonFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\x86\\android_gradle_build.json",
+  "gradleBuildOutputFolder": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\x86",
+  "objFolder": "D:\\Script1\\OPENCV\\build\\intermediates\\cmake\\debug\\obj\\x86",
+  "buildCommandFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\x86\\build_command.txt",
+  "buildOutputFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\x86\\build_output.txt",
+  "modelOutputFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\x86\\build_model.json",
+  "cmake": {
+    "cmakeListsWrapperFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\x86\\CMakeLists.txt",
+    "toolchainWrapperFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\x86\\android_gradle_build.toolchain.cmake",
+    "buildGenerationStateFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\x86\\build_generation_state.json",
+    "cacheKeyFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\x86\\compiler_cache_key.json",
+    "compilerCacheUseFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\x86\\compiler_cache_use.json",
+    "compilerCacheWriteFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\x86\\compiler_cache_write.json",
+    "toolchainSettingsFromCacheFile": "D:\\Script1\\OPENCV\\.cxx\\cxx\\debug\\x86\\compiler_settings_cache.cmake",
+    "cmakeWrappingBaseFolder": "."
+  },
+  "jsonGenerationLoggingRecordFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\x86\\json_generation_record.json",
+  "compileCommandsJsonFile": "D:\\Script1\\OPENCV\\.cxx\\cmake\\debug\\x86\\compile_commands.json"
+}

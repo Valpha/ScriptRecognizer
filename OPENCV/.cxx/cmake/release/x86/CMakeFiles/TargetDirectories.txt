@@ -1,0 +1,3 @@
+D:/Script1/OPENCV/.cxx/cmake/release/x86/CMakeFiles/opencv_jni_shared.dir
+D:/Script1/OPENCV/.cxx/cmake/release/x86/CMakeFiles/edit_cache.dir
+D:/Script1/OPENCV/.cxx/cmake/release/x86/CMakeFiles/rebuild_cache.dir
