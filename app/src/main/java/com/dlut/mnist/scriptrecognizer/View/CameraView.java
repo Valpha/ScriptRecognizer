@@ -66,7 +66,6 @@ public class CameraView extends JavaCameraView implements PictureCallback {
                 }
             }
         }
-
         this.mPictureFileName = fileName;
         // Postview and jpeg are sent in the same buffers if the queue is not empty when performing a capture.
         // Clear up buffers to avoid mCamera.takePicture to be stuck because of a memory issue
