@@ -27,6 +27,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.dlut.mnist.scriptrecognizer.DAO.DataManager;
 import com.dlut.mnist.scriptrecognizer.View.CameraView;
+import com.google.firebase.ml.common.FirebaseMLException;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
@@ -77,10 +78,16 @@ public class MainActivity extends CameraActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         dataManager = new DataManager();
         initView();
+        TFLiteManager tfLite = TFLiteManager.getInstance();
+        try {
+            tfLite.init();
+        } catch (FirebaseMLException e) {
+            e.printStackTrace();
+        }
         requestWritePermission();
 
-
     }
+
 
     private OnClickListener onClickListener = new OnClickListener() {
         @Override

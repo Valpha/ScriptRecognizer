@@ -2,7 +2,9 @@ package com.dlut.mnist.scriptrecognizer;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.ViewUtils;
+import com.google.firebase.ml.common.FirebaseMLException;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
@@ -36,6 +39,7 @@ public class ImageProcessUtils {
     }
 
     static class CvTask extends ThreadUtils.SimpleTask<List<String>> {
+        private static final String TAG = "ImageProcess";
         String mfilepath;
         Mat mImage;
 
@@ -49,6 +53,7 @@ public class ImageProcessUtils {
 
 
             List<String> fileList = new ArrayList<>();
+            TFLiteManager tfLite = TFLiteManager.getInstance();
 
 
             mImage = Imgcodecs.imread(mfilepath, Imgcodecs.IMREAD_ANYCOLOR);
@@ -108,6 +113,8 @@ public class ImageProcessUtils {
             List<Rect> rects = new ArrayList<>();
             String dirpath = mfilepath.replace(".jpg", "/");
             FileUtils.createDir(dirpath);
+            List<String> fileNameList = new ArrayList<>();
+            String string = null;
             for (MatOfPoint contour : contours) {
                 Rect cnt = Imgproc.boundingRect(contour);
 
@@ -123,21 +130,24 @@ public class ImageProcessUtils {
                 }
                 if (cnt.width > 1.5 * meanWidth) {
                     Rect rect1 = new Rect(new Point(cnt.x, cnt.y), new Point(cnt.x + (cnt.width >> 1), cnt.y + cnt.height));
-                    Imgcodecs.imwrite(dirpath.concat(i++ + ".jpg"), new Mat(img, rect1));
+                    string = dirpath.concat(i++ + ".jpg");
+                    fileNameList.add(string);
+                    Imgcodecs.imwrite(string, new Mat(img, rect1));
                     Imgproc.rectangle(mImageColored, rect1, new Scalar(0, 0, 255));
 
                     rects.add(rect1);
-                    // i++;
                     Rect rect2 = new Rect(new Point(cnt.x + (cnt.width >> 1), cnt.y), new Point(cnt.x + cnt.width, cnt.y + cnt.height));
-
-                    Imgcodecs.imwrite(dirpath.concat(i++ + ".jpg"), new Mat(img, rect2));
+                    string = dirpath.concat(i++ + ".jpg");
+                    fileNameList.add(string);
+                    Imgcodecs.imwrite(string, new Mat(img, rect2));
                     Imgproc.rectangle(mImageColored, rect2, new Scalar(0, 0, 255));
-                    // i++;
                     rects.add(rect2);
 
                 } else {
                     rects.add(cnt);
-                    Imgcodecs.imwrite(dirpath.concat(i++ + ".jpg"), new Mat(img, cnt));
+                    string = dirpath.concat(i++ + ".jpg");
+                    fileNameList.add(string);
+                    Imgcodecs.imwrite(string, new Mat(img, cnt));
 
                     Imgproc.rectangle(mImageColored, cnt, new Scalar(0, 0, 255));
                     // i++;
@@ -148,12 +158,29 @@ public class ImageProcessUtils {
             // Imgcodecs.imwrite(mfilepath.replace(".jpg","_RAY.jpg"),mImage);
             Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
             Utils.matToBitmap(mImageColored, bmp);
+
+            //  predict part
+            for (String filename : fileNameList) {
+
+                Log.d(TAG, "doInBackground: 本次预测的文件名为" + filename);
+
+                Bitmap bitmap = BitmapFactory.decodeFile(filename);
+                try {
+                    Log.d(TAG, "doInBackground: 开始预测");
+                    tfLite.predict(bitmap);
+                } catch (FirebaseMLException e) {
+                    e.printStackTrace();
+                }
+            }
+
             ViewUtils.runOnUiThread(() -> {
                 Activity mainActivity = MyActivityManager.getInstance().getCurrentActivity();
                 ImageView ivResult = mainActivity.findViewById(R.id.iv_result);
                 ivResult.setImageBitmap(bmp);
                 ivResult.setVisibility(View.VISIBLE);
                 ivResult.setOnClickListener(view -> view.setVisibility(View.GONE));
+
+
             });
 
 
