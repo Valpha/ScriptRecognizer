@@ -77,6 +77,7 @@ public class DataListAdapter extends BaseAdapter {
                 InputMethodManager inputManager = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 assert inputManager != null;
                 inputManager.showSoftInput(v, 0);
+
                 ((EditText) v).setOnEditorActionListener((v1, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_SEND
                             || actionId == EditorInfo.IME_ACTION_DONE

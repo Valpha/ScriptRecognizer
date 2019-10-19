@@ -1,37 +1,37 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:2:1-6:12
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:2:1-6:12
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:2:1-6:12
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:2:1-6:12
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:2:1-6:12
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:2:1-6:12
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:2:1-6:12
+ADDED from D:\Script1\OPENCV\java\AndroidManifest.xml:2:1-6:12
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml:2:1-6:12
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml:2:1-6:12
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml:2:1-6:12
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml:2:1-6:12
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml:2:1-6:12
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml:2:1-6:12
 	package
-		ADDED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:3:7-27
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
+		ADDED from D:\Script1\OPENCV\java\AndroidManifest.xml:3:7-27
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
 	android:versionName
-		ADDED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:5:7-34
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
+		ADDED from D:\Script1\OPENCV\java\AndroidManifest.xml:5:7-34
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:2:11-69
+		ADDED from D:\Script1\OPENCV\java\AndroidManifest.xml:2:11-69
 	android:versionCode
-		ADDED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml:4:7-33
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
+		ADDED from D:\Script1\OPENCV\java\AndroidManifest.xml:4:7-33
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
 uses-sdk
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
+INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-		ADDED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
+		ADDED from D:\Script1\OPENCV\java\AndroidManifest.xml
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-		ADDED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
-		INJECTED from E:\workspace\Android\ScriptRecognizer\OPENCV\java\AndroidManifest.xml
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml
+		ADDED from D:\Script1\OPENCV\java\AndroidManifest.xml
+		INJECTED from D:\Script1\OPENCV\java\AndroidManifest.xml

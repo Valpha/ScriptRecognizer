@@ -11,11 +11,14 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -61,6 +64,7 @@ public class MainActivity extends CameraActivity {
     private boolean gotFile = false;
     private TextView tvFile;
     private DataManager dataManager;
+    private EditText etStuNumber;
 
     @Override
     protected void onStart() {
@@ -185,6 +189,33 @@ public class MainActivity extends CameraActivity {
         btImport.setOnClickListener(v -> openSystemFile());
         Button btShare = findViewById(R.id.bt_export);
         btShare.setOnClickListener(v -> shareCsvFile());
+
+        etStuNumber = findViewById(R.id.et_stunumber);
+        etStuNumber.setOnEditorActionListener((v, actionId, event) -> {
+            int number = dataManager.getDataCount();
+            LogUtils.dTag(TAG, "count is :" + number);
+            if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE
+                    || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
+                int mark = 0;
+                LogUtils.dTag(TAG, "11111");
+                for (int StuId = 0; StuId < number; StuId++) {
+
+                    String stunum = dataManager.getDataByOrder(StuId).getStunum();
+                    String etStunum = etStuNumber.getText().toString().trim();
+                    if (stunum.equals(etStunum)) {
+                        EditText score = lvDataBoard.getChildAt(StuId).findViewById(R.id.et_score);
+                        LogUtils.dTag(TAG, "fuck");
+                        score.requestFocus();
+                        mark = 1;
+                    }
+
+                }
+                if (mark != 1) {
+                    ToastUtils.showShort("学号不存在！");
+                }
+            }
+            return false;
+        });
     }
 
     private void requestWritePermission() {

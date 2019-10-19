@@ -58,7 +58,7 @@
         android:ems="10"
         android:gravity="center"
         android:hint="Score"
-        android:imeOptions="flagNoExtractUi|actionSend"
+        android:imeOptions="actionDone|flagNoExtractUi"
         android:inputType="number"
         android:padding="8dp"
         android:singleLine="true"
