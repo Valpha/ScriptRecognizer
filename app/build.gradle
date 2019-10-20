@@ -38,8 +38,8 @@ dependencies {
     implementation "com.opencsv:opencsv:4.6"
     implementation 'com.blankj:utilcode:1.25.9'
     implementation project(path: ':OPENCV')
-
-    implementation 'com.google.firebase:firebase-ml-model-interpreter:21.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -2,6 +2,7 @@ package com.dlut.mnist.scriptrecognizer;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +32,6 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.dlut.mnist.scriptrecognizer.DAO.DataManager;
 import com.dlut.mnist.scriptrecognizer.View.CameraView;
-import com.google.firebase.ml.common.FirebaseMLException;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraActivity;
@@ -65,34 +66,13 @@ public class MainActivity extends CameraActivity {
     private TextView tvFile;
     private DataManager dataManager;
     private EditText etStuNumber;
+    private boolean predictFinishedFlag = false;
 
     @Override
     protected void onStart() {
         super.onStart();
         LogUtils.dTag(TAG, "OnStart");
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LogUtils.dTag(TAG, "OnCreate");
-        setContentView(R.layout.activity_main);
-
-        //  保持屏幕不锁定
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        dataManager = new DataManager();
-        initView();
-        TFLiteManager tfLite = TFLiteManager.getInstance();
-        try {
-            tfLite.init();
-        } catch (FirebaseMLException e) {
-            e.printStackTrace();
-        }
-        requestWritePermission();
-
-    }
-
-
     private OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -102,8 +82,8 @@ public class MainActivity extends CameraActivity {
 
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
                     String currentDateandTime = sdf.format(new Date());
-                    FileUtils.createDir(PathUtils.getExternalStoragePath() + "/ScriptRecognizer");
-                    String fileName = PathUtils.getExternalStoragePath() + "/ScriptRecognizer" + "/" + currentDateandTime + ".jpg";
+                    FileUtils.createDir(PathUtils.getExternalAppFilesPath() + "/ScriptRecognizer");
+                    String fileName = PathUtils.getExternalAppFilesPath() + "/ScriptRecognizer" + "/" + currentDateandTime + ".jpg";
 
                     cameraView.takePicture(fileName);
                     ToastUtils.showShort(fileName + " saved");
@@ -116,6 +96,22 @@ public class MainActivity extends CameraActivity {
             }
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogUtils.dTag(TAG, "OnCreate");
+        setContentView(R.layout.activity_main);
+
+        //  保持屏幕不锁定
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        dataManager = new DataManager();
+        initView();
+        TFLiteManager tfLite = TFLiteManager.getInstance();
+        tfLite.init();
+        requestWritePermission();
+
+    }
 
     private void shareCsvFile() {
         String filepath = SPUtils.getInstance(SPNAME).getString(SPKEY_FILE);
@@ -140,9 +136,9 @@ public class MainActivity extends CameraActivity {
     }
 
     private void initView() {
-        tvFile = (TextView) findViewById(R.id.tv_file);
-        ivRefRect = (ImageView) findViewById(R.id.iv_reference);
-        cameraView = (CameraView) findViewById(R.id.cameraView);
+        tvFile = findViewById(R.id.tv_file);
+        ivRefRect = findViewById(R.id.iv_reference);
+        cameraView = findViewById(R.id.cameraView);
         cameraView.setVisibility(SurfaceView.VISIBLE);
         cameraView.setCvCameraViewListener(new CvCameraViewListener2() {
             @Override
@@ -206,6 +202,9 @@ public class MainActivity extends CameraActivity {
                         EditText score = lvDataBoard.getChildAt(StuId).findViewById(R.id.et_score);
                         LogUtils.dTag(TAG, "fuck");
                         score.requestFocus();
+                        InputMethodManager inputManager = (InputMethodManager) score.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        assert inputManager != null;
+                        inputManager.showSoftInput(v, 0);
                         mark = 1;
                     }
 
@@ -237,7 +236,7 @@ public class MainActivity extends CameraActivity {
 
     private void onWritePermissionGranted() {
         Log.d(TAG, "onWritePermissionGranted: Got Write Permission");
-        switch (FileUtils.createDir(PathUtils.getExternalStoragePath() + "/ScriptRecognizer")) {
+        switch (FileUtils.createDir(PathUtils.getExternalAppFilesPath() + "/ScriptRecognizer")) {
             case FileUtils.FLAG_SUCCESS:
                 LogUtils.i("ScriptRecognizer 目录创建成功。");
                 break;
@@ -270,7 +269,7 @@ public class MainActivity extends CameraActivity {
                 }
             } else {
                 try {
-                    dataManager.writeCsv(PathUtils.getExternalStoragePath() + "/ScriptRecognizer" + "/templete.csv");
+                    dataManager.writeCsv(PathUtils.getExternalAppFilesPath() + "/ScriptRecognizer" + "/templete.csv");
                     gotFile = false;
                 } catch (IOException e) {
                     e.printStackTrace();
