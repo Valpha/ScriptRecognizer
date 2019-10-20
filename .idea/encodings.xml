@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" addBOMForNewFiles="with NO BOM">
-    <file url="file://$PROJECT_DIR$/app/src/main/assert/score.csv" charset="GBK" />
+  <component name="Encoding">
+    <file url="file://$USER_HOME$/Desktop/score.csv" charset="GBK" />
+    <file url="file://$USER_HOME$/Desktop/test.csv" charset="GBK" />
+    <file url="file://$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/xiaomi-mi_8-d645f60c/sdcard/ScriptRecognizer/score.csv" charset="GBK" />
+    <file url="file://$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/xiaomi-mi_8-d645f60c/sdcard/ScriptRecognizer/test1.csv" charset="GBK" />
   </component>
 </project>

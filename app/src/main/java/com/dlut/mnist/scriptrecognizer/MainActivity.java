@@ -67,12 +67,14 @@ public class MainActivity extends CameraActivity {
     private DataManager dataManager;
     private EditText etStuNumber;
     private boolean predictFinishedFlag = false;
+    private DataListAdapter adapter;
 
     @Override
     protected void onStart() {
         super.onStart();
-        LogUtils.dTag(TAG, "OnStart");
+        // LogUtils.dTag(TAG, "OnStart");
     }
+
     private OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -164,7 +166,7 @@ public class MainActivity extends CameraActivity {
             }
         });
         ListView lvDataBoard = findViewById(R.id.lv_databoard);
-        DataListAdapter adapter = new DataListAdapter(this, dataManager);
+        adapter = new DataListAdapter(this, dataManager);
         lvDataBoard.setAdapter(adapter);
         Button btSave = findViewById(R.id.bt_save);
         btSave.setOnClickListener(v -> {
@@ -204,7 +206,7 @@ public class MainActivity extends CameraActivity {
                         score.requestFocus();
                         InputMethodManager inputManager = (InputMethodManager) score.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         assert inputManager != null;
-                        inputManager.showSoftInput(v, 0);
+                        inputManager.showSoftInput(score, 0);
                         mark = 1;
                     }
 
@@ -254,42 +256,44 @@ public class MainActivity extends CameraActivity {
 
     private void loadCsvFile() {
         SPUtils spUtils = SPUtils.getInstance(SPNAME);
-        if (!gotFile) {
-            String filepath = spUtils.getString(SPKEY_FILE);
-            LogUtils.dTag(TAG, filepath);
-            if (!Objects.equals(filepath, "")) {
-                try {
-                    dataManager.readCsv(filepath);
-                    gotFile = true;
-                    tvFile.setText(filepath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    gotFile = false;
-                    ToastUtils.showLong("CSV文件打开失败，请检查文件路径是否正确");
-                }
-            } else {
-                try {
-                    dataManager.writeCsv(PathUtils.getExternalAppFilesPath() + "/ScriptRecognizer" + "/templete.csv");
-                    gotFile = false;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                ToastUtils.showLong("未指定文件，请参考模板手动加载CSV文件！");
+        String filepath = spUtils.getString(SPKEY_FILE);
+        LogUtils.dTag(TAG, filepath);
+        if (!Objects.equals(filepath, "")) {
+            try {
+                dataManager.clearData();
+                dataManager.readCsv(filepath);
+                // gotFile = true;
+                tvFile.setText(filepath);
+                adapter.notifyDataSetChanged();
+            } catch (IOException e) {
+                e.printStackTrace();
+                // gotFile = false;
+                ToastUtils.showLong("CSV文件打开失败，请检查文件路径是否正确");
             }
+        } else {
+            try {
+                dataManager.writeCsv(PathUtils.getExternalAppFilesPath() + "/ScriptRecognizer" + "/templete.csv");
+                // gotFile = false;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ToastUtils.showLong("未指定文件，请参考模板手动加载CSV文件！");
         }
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        LogUtils.dTag(TAG, "OnStop");
+        // LogUtils.dTag(TAG, "OnStop");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LogUtils.dTag(TAG, "OnPause");
+        // LogUtils.dTag(TAG, "OnPause");
         if (cameraView != null) {
             cameraView.disableView();
         }
@@ -298,7 +302,7 @@ public class MainActivity extends CameraActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.dTag(TAG, "OnResume");
+        // LogUtils.dTag(TAG, "OnResume");
         if (!OpenCVLoader.initDebug()) {
             Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_4_0, this, mLoaderCallback);
@@ -326,6 +330,7 @@ public class MainActivity extends CameraActivity {
             LogUtils.dTag("MainActivity", filepath);
             SPUtils.getInstance(SPNAME).put(SPKEY_FILE, filepath);
             loadCsvFile();
+
         }
     }
 

@@ -160,4 +160,9 @@ public class DataManager {
         return data.getScoreByDate(timeStamp);
 
     }
+
+    public void clearData() {
+        dataSheet = new ArrayList<>();
+        headerList = null;
+    }
 }
